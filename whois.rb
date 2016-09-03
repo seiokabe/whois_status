@@ -1,8 +1,8 @@
 #!/bin/env ruby
 
+require 'rubygems'
 require 'optparse'
 require 'date'
-require 'rubygems'
 require 'whois'
 require 'json'
 
@@ -75,9 +75,6 @@ opt.on('-e') {|v| params[:e] = v }
 opt.parse!(ARGV)
 
 exit if params[:e]
-
-# print(params[:t])
-# exit
 
 textview = (params[:t]) ? true : false
 jsondata = Array.new()
