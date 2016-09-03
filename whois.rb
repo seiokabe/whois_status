@@ -6,6 +6,54 @@ require 'date'
 require 'whois'
 require 'json'
 
+defDomainListFile = ".domain_list.txt"
+
+options = {}
+OptionParser.new do |opts|
+  opts.banner     = "whois.rb: an intelligent pure Ruby WHOIS Status Check client"
+  opts.define_head  "Usage: whois.rb [options]"
+  opts.separator    ""
+  opts.separator    "Examples:"
+  opts.separator    " whois.rb --domain nexia.jp"
+  opts.separator    " whois.rb -f <domain_list_filename> --text"
+  opts.separator    ""
+  opts.separator    " Defualt outpu json data"
+  opts.separator    ""
+  opts.separator    "Options:"
+
+  opts.on("-d", "--domain [domain name]", String, "target to domain name") do |domain|
+    options[:domain] = domain
+  end
+
+  opts.on("-f", "--file [FILE NAME]", String, "domain list filename (Default: #{defDomainListFile})") do |filename|
+    options[:filename] = filename
+  end
+
+  opts.on("-t", "--text", "Status Text View") do |text|
+    options[:text] = text
+    puts options[:text]
+  end
+
+  opts.on_tail("-h", "--help", "show this help and exit") do
+    puts opts
+    exit
+  end
+
+  begin
+    opts.parse!
+  rescue OptionParser::ParseError
+    puts opts
+    exit 1
+  end
+
+  if ARGV.size.zero?
+    puts opts
+    exit 1
+  end
+end
+
+object = ARGV.shift
+
 Wclient = Whois::Client.new(:timeout => 5)
 
 class Time
@@ -66,23 +114,13 @@ def PrintHash(hash)
   print("\n")
 end
 
-params = {}
-opt = OptionParser.new
-opt.on('-d domain')   {|v| params[:d] = v }
-opt.on('-f filename') {|v| params[:f] = v }
-opt.on('-t') {|v| params[:t] = v }
-opt.on('-e') {|v| params[:e] = v }
-opt.parse!(ARGV)
-
-exit if params[:e]
-
-textview = (params[:t]) ? true : false
+# textview = (options[:text]) ? true : false
 jsondata = Array.new()
 
-if params[:d] then
+if options[:domain] then
   # print(params[:d], "\n")
-  data = WhoisGet(params[:d])
-  if textview then
+  data = WhoisGet(options[:domain])
+  if options[:text] then
     PrintHash(data)
   else
     jsondata.push(data)
@@ -90,13 +128,13 @@ if params[:d] then
 
 else
 
-  file = (params[:f].nil?) ? ".domain_list.txt" : "#{params[:f]}"
+  file = (options[:filename].nil?) ? defDomainListFile : "#{options[:filename]}"
 
   File.read(file).each_line do |domain|
     #print(domain)
     domain.chop!
     data = WhoisGet(domain)
-    if textview then
+    if options[:text] then
       PrintHash(data)
     else
       jsondata.push(data)
