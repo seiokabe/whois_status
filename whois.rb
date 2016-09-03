@@ -29,9 +29,9 @@ OptionParser.new do |opts|
     options[:filename] = filename
   end
 
+  options[:text] = false
   opts.on("-t", "--text", "Status Text View") do |text|
     options[:text] = text
-    puts options[:text]
   end
 
   opts.on_tail("-h", "--help", "show this help and exit") do
@@ -42,7 +42,7 @@ OptionParser.new do |opts|
   begin
     opts.parse!
   rescue OptionParser::ParseError
-    puts opts
+    # puts opts
     print("Error: OptionParser::ParseError\n")
     exit 1
   end
