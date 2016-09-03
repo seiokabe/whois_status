@@ -48,7 +48,7 @@ def WhoisGet(domain)
   hash.store("created_on", created_on)
   hash.store("updated_on", updated_on)
 
-  unless ans.nameservers.nil? || ans.nemaservers.length == 0 then
+  unless ans.nameservers.nil? then
     array = Array.new()
     i = 0
     ans.nameservers.each do |nameserver|
