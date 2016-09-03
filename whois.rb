@@ -19,7 +19,7 @@ class Time
 end
 
 def WhoisGet(domain)
-  #print("WhoisGet: #{domain}")
+  print("WhoisGet: #{domain}")
   hash = Hash.new()
 
   if domain.empty? then
@@ -73,7 +73,7 @@ opt.parse!(ARGV)
 exit if params[:e]
 
 if params[:d] then
-
+  print(params[:d])
   data = WhoisGet(params[:d])
   data.each{|key, value|
     print(key, ":\t", value, "\n")
