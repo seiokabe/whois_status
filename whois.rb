@@ -22,7 +22,10 @@ OptionParser.new do |opts|
   opts.separator    "Options:"
 
   opts.on("-d", "--domain [domain]", String, "target to domain name") do |domain|
-    print("-d domain: " + domain, "\n") if domain
+    unless domain then
+      print("Error: -d, --domain option, requires additional arguments."
+      exit 1
+    end
     options[:domain] = domain
   end
 
