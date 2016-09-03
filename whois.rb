@@ -43,15 +43,15 @@ OptionParser.new do |opts|
     opts.parse!
   rescue OptionParser::ParseError
     puts opts
-    print("Error: OptionParser::ParseError")
+    print("Error: OptionParser::ParseError\n")
     exit 1
   end
 
-  if ARGV.size.zero?
-    puts opts
-    print("Error: ARGV.size.zero")
-    exit 1
-  end
+  # if ARGV.size.zero?
+  #   puts opts
+  #   print("Error: ARGV.size.zero\n")
+  #   exit 1
+  # end
 end
 
 object = ARGV.shift
