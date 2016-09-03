@@ -75,6 +75,9 @@ opt.parse!(ARGV)
 
 exit if params[:e]
 
+print(params[:t])
+exit
+
 textview = (params[:t]) ? true : false
 jsondata = Array.new()
 
