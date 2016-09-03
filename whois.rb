@@ -6,7 +6,7 @@ require 'date'
 require 'whois'
 require 'json'
 
-defDomainListFile = ".domain_list.txt"
+defDomainListFile = "domain.txt"
 
 array_domains = Array.new()
 
@@ -16,7 +16,7 @@ OptionParser.new do |opts|
   opts.define_head  "Usage: whois.rb [options]"
   opts.separator    ""
   opts.separator    "Examples:"
-  opts.separator    " whois.rb --domain nexia.jp"
+  opts.separator    " whois.rb -d example.jp -d example.com"
   opts.separator    " whois.rb -f <domain_list_filename> --text"
   opts.separator    ""
   opts.separator    " Defualt outpu json data"
@@ -28,9 +28,7 @@ OptionParser.new do |opts|
       print("Error: -d, --domain option, requires additional arguments.\n\n")
       exit 1
     end
-    # print("--domain: ", domain, "\n")
     array_domains.push(domain)
-    # options[:domain] = domain
   end
 
   opts.on("-f", "--file [FILE NAME]", String, "domain list filename (Default: #{defDomainListFile})") do |filename|
