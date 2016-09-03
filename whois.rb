@@ -4,6 +4,7 @@ require 'optparse'
 require 'date'
 require 'rubygems'
 require 'whois'
+require 'json'
 
 Wclient = Whois::Client.new(:timeout => 5)
 
@@ -107,4 +108,4 @@ else
 
 end
 
-print(jsondata) if jsondata.length >= 0
+puts JSON.generate(jsondata) if jsondata.length >= 0
