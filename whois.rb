@@ -124,7 +124,7 @@ def whois_get(d)
     return data
   rescue => e
     hash = Hash.new(d)
-    hash.domain("domain", d)
+    hash.store("domain", d)
     hash.store("status", false)
     hash.store("error", e.message)
     return hash
