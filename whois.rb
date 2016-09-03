@@ -36,6 +36,7 @@ OptionParser.new do |opts|
 
   opts.on_tail("-h", "--help", "show this help and exit") do
     puts opts
+    print("\n")
     exit
   end
 
@@ -43,7 +44,7 @@ OptionParser.new do |opts|
     opts.parse!
   rescue OptionParser::ParseError
     # puts opts
-    print("Error: OptionParser::ParseError\n")
+    print("Error: OptionParser::ParseError\n\n")
     exit 1
   end
 
@@ -144,4 +145,7 @@ else
 
 end
 
-puts JSON.pretty_generate(jsondata) if jsondata.length > 0
+if jsondata.length > 0 then
+  puts JSON.pretty_generate(jsondata)
+end
+ 
