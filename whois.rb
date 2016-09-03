@@ -75,16 +75,16 @@ opt.parse!(ARGV)
 
 exit if params[:e]
 
-TextView = (params[:t]) ? true : false
-JsonData = Array.new()
+textview = (params[:t]) ? true : false
+jsondata = Array.new()
 
 if params[:d] then
   # print(params[:d], "\n")
   data = WhoisGet(params[:d])
-  if TextVew then
+  if textview then
     PrintHash(data)
   else
-    JsonData.push(data)
+    jsondata.push(data)
   end
 
 else
@@ -95,13 +95,13 @@ else
     #print(domain)
     domain.chop!
     data = WhoisGet(domain)
-    if TextVew then
+    if textview then
       PrintHash(data)
     else
-      JsonData.push(data)
+      jsondata.push(data)
     end
   end
 
 end
 
-print(JsonData) if JsonData.length >= 0
+print(jsondata) if jsondata.length >= 0
