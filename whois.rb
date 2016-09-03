@@ -8,6 +8,8 @@ require 'json'
 
 defDomainListFile = ".domain_list.txt"
 
+array_domains = Array.new()
+
 options = {}
 OptionParser.new do |opts|
   opts.banner     = "whois.rb: an intelligent pure Ruby WHOIS Status Check client"
@@ -26,8 +28,9 @@ OptionParser.new do |opts|
       print("Error: -d, --domain option, requires additional arguments.\n\n")
       exit 1
     end
-    print("--domain: ", domain, "\n")
-    options[:domain] = domain
+    # print("--domain: ", domain, "\n")
+    array_domains.push(domain)
+    # options[:domain] = domain
   end
 
   opts.on("-f", "--file [FILE NAME]", String, "domain list filename (Default: #{defDomainListFile})") do |filename|
@@ -137,31 +140,24 @@ end
 
 jsondata = Array.new()
 
-if options[:domain] then
-  # print(params[:d], "\n")
-  data = whois_get(options[:domain])
+if array_domains.length == 0 then
+
+  file = (options[:filename].nil?) ? defDomainListFile : "#{options[:filename]}"
+  File.read(file).each_line do |domain|
+    domain.chop!
+    next if domain =~ /^$/
+    array_domains.push(domain)
+  end
+
+end
+
+array_domains.each do |str_domain|
+  data = whois_get(str_domain)
   if options[:text] then
     PrintHash(data)
   else
     jsondata.push(data)
   end
-
-else
-
-  file = (options[:filename].nil?) ? defDomainListFile : "#{options[:filename]}"
-
-  File.read(file).each_line do |domain|
-    #print(domain)
-    domain.chop!
-    next if domain =~ /^$/
-    data = whois_get(domain)
-    if options[:text] then
-      PrintHash(data)
-    else
-      jsondata.push(data)
-    end
-  end
-
 end
 
 if jsondata.length > 0 then
