@@ -108,4 +108,4 @@ else
 
 end
 
-puts JSON.generate(jsondata) if jsondata.length >= 0
+puts JSON.pretty_generate(jsondata) if jsondata.length >= 0
