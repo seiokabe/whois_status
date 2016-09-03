@@ -118,11 +118,24 @@ def PrintHash(hash)
   print("\n")
 end
 
+def whois_get(d)
+  begin
+    data = WhoisGet(d)
+    return data
+  rescue => e
+    hash = Hash.new(d)
+    hash.domain("domain", d)
+    hash.store("status", false)
+    hash.store("error", e.message)
+    return hash
+  end
+end
+
 jsondata = Array.new()
 
 if options[:domain] then
   # print(params[:d], "\n")
-  data = WhoisGet(options[:domain])
+  data = whois_get(options[:domain])
   if options[:text] then
     PrintHash(data)
   else
@@ -137,7 +150,7 @@ else
     #print(domain)
     domain.chop!
     next if domain =~ /^$/
-    data = WhoisGet(domain)
+    data = whois_get(domain)
     if options[:text] then
       PrintHash(data)
     else
