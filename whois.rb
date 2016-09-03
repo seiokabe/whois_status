@@ -116,7 +116,6 @@ def PrintHash(hash)
   print("\n")
 end
 
-# textview = (options[:text]) ? true : false
 jsondata = Array.new()
 
 if options[:domain] then
@@ -145,4 +144,4 @@ else
 
 end
 
-puts JSON.pretty_generate(jsondata) if jsondata.length >= 0
+puts JSON.pretty_generate(jsondata) if jsondata.length > 0
