@@ -22,6 +22,7 @@ OptionParser.new do |opts|
   opts.separator    "Options:"
 
   opts.on("-d", "--domain [domain]", String, "target to domain name") do |domain|
+    print("-d domain: " + domain, "\n")
     options[:domain] = domain
   end
 
@@ -135,6 +136,7 @@ else
   File.read(file).each_line do |domain|
     #print(domain)
     domain.chop!
+    next if domain =~ /^$/
     data = WhoisGet(domain)
     if options[:text] then
       PrintHash(data)
@@ -148,4 +150,3 @@ end
 if jsondata.length > 0 then
   puts JSON.pretty_generate(jsondata)
 end
- 
