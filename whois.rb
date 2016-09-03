@@ -48,7 +48,7 @@ def WhoisGet(domain)
   hash.store("created_on", created_on)
   hash.store("updated_on", updated_on)
 
-  unless ans.nameservers.nil? then
+  unless ans.nameservers.nil? || ans.nemaservers.length == 0 then
     array = Array.new()
     i = 0
     ans.nameservers.each do |nameserver|
@@ -72,13 +72,25 @@ opt.parse!(ARGV)
 
 exit if params[:e]
 
-file = (params[:f].nil?) ? ".domain_list.txt" : "#{params[:f]}"
+if params[:d] then
 
-File.read(file).each_line do |_domain|
-  #print(_domain)
-  data = WhoisGet(_domain)
+  data = WhoisGet(params[:d])
   data.each{|key, value|
     print(key, ":\t", value, "\n")
   }
   print("\n")
+
+else
+
+  file = (params[:f].nil?) ? ".domain_list.txt" : "#{params[:f]}"
+
+  File.read(file).each_line do |_domain|
+    #print(_domain)
+    data = WhoisGet(_domain)
+    data.each{|key, value|
+      print(key, ":\t", value, "\n")
+    }
+    print("\n")
+  end
+
 end
