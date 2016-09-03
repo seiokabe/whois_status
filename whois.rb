@@ -43,11 +43,13 @@ OptionParser.new do |opts|
     opts.parse!
   rescue OptionParser::ParseError
     puts opts
+    print("Error: OptionParser::ParseError")
     exit 1
   end
 
   if ARGV.size.zero?
     puts opts
+    print("Error: ARGV.size.zero")
     exit 1
   end
 end
