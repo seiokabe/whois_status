@@ -69,14 +69,14 @@ params = {}
 opt = OptionParser.new
 opt.on('-d domain')   {|v| params[:d] = v }
 opt.on('-f filename') {|v| params[:f] = v }
-opt.on('-t') {|v| params[:j] = v }
+opt.on('-t') {|v| params[:t] = v }
 opt.on('-e') {|v| params[:e] = v }
 opt.parse!(ARGV)
 
 exit if params[:e]
 
-print(params[:t])
-exit
+# print(params[:t])
+# exit
 
 textview = (params[:t]) ? true : false
 jsondata = Array.new()
