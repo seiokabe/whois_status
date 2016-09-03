@@ -19,7 +19,7 @@ class Time
 end
 
 def WhoisGet(domain)
-  print("WhoisGet: #{domain}", "\n")
+  # print("WhoisGet: #{domain}", "\n")
   hash = Hash.new()
 
   if domain.empty? then
@@ -47,37 +47,45 @@ def WhoisGet(domain)
   hash.store("created_on", created_on)
   hash.store("updated_on", updated_on)
 
-  unless ans.nameservers.nil? then
+  if !ans.nameservers.nil? && ans.nameservers.length > 0 then
     array = Array.new()
-    i = 0
     ans.nameservers.each do |nameserver|
-      #puts nameserver
-      array[i] = nameserver.to_s
-      i += 1
+      array.push(nameserver.to_s)
     end
     hash.store("nameservers", array)
   end
 
   return hash
+end
 
+def PrintHash(hash)
+  hash.each{|key, value|
+    print(key, ":\t", value, "\n")
+  }
+  print("\n")
 end
 
 params = {}
 opt = OptionParser.new
 opt.on('-d domain')   {|v| params[:d] = v }
 opt.on('-f filename') {|v| params[:f] = v }
+opt.on('-t') {|v| params[:j] = v }
 opt.on('-e') {|v| params[:e] = v }
 opt.parse!(ARGV)
 
 exit if params[:e]
 
+TextView = (params[:t]) ? true : false
+JsonData = Array.new()
+
 if params[:d] then
-  print(params[:d], "\n")
+  # print(params[:d], "\n")
   data = WhoisGet(params[:d])
-  data.each{|key, value|
-    print(key, ":\t", value, "\n")
-  }
-  print("\n")
+  if TextVew then
+    PrintHash(data)
+  else
+    JsonData.push(data)
+  end
 
 else
 
@@ -87,10 +95,13 @@ else
     #print(domain)
     domain.chop!
     data = WhoisGet(domain)
-    data.each{|key, value|
-      print(key, ":\t", value, "\n")
-    }
-    print("\n")
+    if TextVew then
+      PrintHash(data)
+    else
+      JsonData.push(data)
+    end
   end
 
 end
+
+print(JsonData) if JsonData.length >= 0
