@@ -1,4 +1,4 @@
-#!/bin/env ruby
+#!/usr/bin/env ruby
 
 require 'rubygems'
 require 'optparse'
@@ -21,7 +21,7 @@ OptionParser.new do |opts|
   opts.separator    ""
   opts.separator    "Options:"
 
-  opts.on("-d", "--domain [domain name]", String, "target to domain name") do |domain|
+  opts.on("-d", "--domain [domain]", String, "target to domain name") do |domain|
     options[:domain] = domain
   end
 
