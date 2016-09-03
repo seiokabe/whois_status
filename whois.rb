@@ -23,9 +23,10 @@ OptionParser.new do |opts|
 
   opts.on("-d", "--domain [domain]", String, "target to domain name") do |domain|
     unless domain then
-      print("Error: -d, --domain option, requires additional arguments.\n")
+      print("Error: -d, --domain option, requires additional arguments.\n\n")
       exit 1
     end
+    print("--domain: ", domain, "\n")
     options[:domain] = domain
   end
 
