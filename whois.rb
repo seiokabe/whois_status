@@ -19,7 +19,7 @@ class Time
 end
 
 def WhoisGet(domain)
-  print("WhoisGet: #{domain}")
+  print("WhoisGet: #{domain}", "\n")
   hash = Hash.new()
 
   if domain.empty? then
@@ -28,7 +28,6 @@ def WhoisGet(domain)
      return _hash
   end
 
-  domain.chop!
   ans = Wclient.lookup(domain)
 
   hash.store("domain", domain)
@@ -73,7 +72,7 @@ opt.parse!(ARGV)
 exit if params[:e]
 
 if params[:d] then
-  print(params[:d])
+  print(params[:d], "\n")
   data = WhoisGet(params[:d])
   data.each{|key, value|
     print(key, ":\t", value, "\n")
@@ -84,9 +83,10 @@ else
 
   file = (params[:f].nil?) ? ".domain_list.txt" : "#{params[:f]}"
 
-  File.read(file).each_line do |_domain|
-    #print(_domain)
-    data = WhoisGet(_domain)
+  File.read(file).each_line do |domain|
+    #print(domain)
+    domain.chop!
+    data = WhoisGet(domain)
     data.each{|key, value|
       print(key, ":\t", value, "\n")
     }
