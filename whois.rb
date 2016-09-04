@@ -53,12 +53,6 @@ OptionParser.new do |opts|
     print("Error: OptionParser::ParseError\n\n")
     exit 1
   end
-
-  # if ARGV.size.zero?
-  #   puts opts
-  #   print("Error: ARGV.size.zero\n")
-  #   exit 1
-  # end
 end
 
 object = ARGV.shift
@@ -136,19 +130,17 @@ def whois_get(d)
   end
 end
 
-jsondata = Array.new()
-
 if array_domains.length == 0 then
-
   file = (options[:filename].nil?) ? defDomainListFile : "#{options[:filename]}"
   File.read(file).each_line do |domain|
     domain.chop!
     next if domain =~ /^$/
+    next if domain =~ /^#/
     array_domains.push(domain)
   end
-
 end
 
+jsondata = Array.new()
 array_domains.each do |str_domain|
   data = whois_get(str_domain)
   if options[:text] then
