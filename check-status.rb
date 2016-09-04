@@ -51,7 +51,7 @@ def CheckStatus(arr)
     error = true if hash[:available]
     # if hash[:expires_on]
     errDomain.push(hash) if error
-    puts hash[:domain] if error
+    print("Error: #{hash[:domain]}") if error
   }
   return errDomain
 end
