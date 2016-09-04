@@ -9,7 +9,7 @@ require "awesome_print"
 options = {}
 OptionParser.new do |opts|
   opts.banner     = "json-io.rb: Ruby Json input output tool"
-  opts.define_head  "Usage: whois.rb [options]"
+  opts.define_head  "Usage: json-io.rb [options]"
   opts.separator    ""
   opts.separator    "Examples:"
   opts.separator    " json-io.rb -j <json file> [--ap]"
