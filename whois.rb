@@ -86,10 +86,13 @@ def WhoisGet(domain)
 
   available  = (ans.available?.nil?)  ? "N/A" : ans.available?
   registered = (ans.registered?.nil?) ? "N/A" : ans.registered?
-  expires_on = (ans.expires_on.nil?)  ? "N/A" : "#{ans.expires_on.timezone('Asia/Tokyo')} (Origin: #{ans.expires_on})"
+  # expires_on = (ans.expires_on.nil?)  ? "N/A" : "#{ans.expires_on.timezone('Asia/Tokyo')} (Origin: #{ans.expires_on})"
+  expires_on = (ans.expires_on.nil?)  ? "N/A" : ans.expires_on.timezone('Asia/Tokyo')
   registrar  = (ans.registrar.nil?)   ? "N/A" : ans.registrar.name
-  created_on = (ans.created_on.nil?)  ? "N/A" : "#{ans.created_on.timezone('Asia/Tokyo')} (Origin: #{ans.created_on})"
-  updated_on = (ans.updated_on.nil?)  ? "N/A" : "#{ans.updated_on.timezone('Asia/Tokyo')} (Origin: #{ans.updated_on})"
+  # created_on = (ans.created_on.nil?)  ? "N/A" : "#{ans.created_on.timezone('Asia/Tokyo')} (Origin: #{ans.created_on})"
+  # updated_on = (ans.updated_on.nil?)  ? "N/A" : "#{ans.updated_on.timezone('Asia/Tokyo')} (Origin: #{ans.updated_on})"
+  created_on = (ans.created_on.nil?)  ? "N/A" : ans.created_on.timezone('Asia/Tokyo')
+  updated_on = (ans.updated_on.nil?)  ? "N/A" : ans.updated_on.timezone('Asia/Tokyo')
 
   hash.store("status", true)
   hash.store("available",  available)
