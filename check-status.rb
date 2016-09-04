@@ -70,11 +70,13 @@ def CheckStatus(arr)
     end
 
     if ( error == false && hash["nameservers"].nil? == false ) then
+      print("====== ", hash["domain"], "\n")
       dns_match = false
       ValidDNS.each do |dns|
         puts dns
         puts hash["nameservers"]
         hit = hash["nameservers"].grep(Regexp.new(dns))
+        p hit
         dns_match = true if hit.length == 0
       end
 
