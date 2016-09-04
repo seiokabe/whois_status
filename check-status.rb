@@ -46,12 +46,12 @@ def CheckStatus(arr)
   error = false
   errDomain = Array.new()
   arr.each{|hash|
-    print hash["domain"]
-    error = true unless hash[:status]
-    error = true if hash[:available]
+    print
+    error = true unless hash["status"]
+    error = true if hash["available"]
     # if hash[:expires_on]
     errDomain.push(hash) if error
-    print(" : Error\n") if error
+    print("Error: ", hash["domain"], "\n") if error
   }
   return errDomain
 end
