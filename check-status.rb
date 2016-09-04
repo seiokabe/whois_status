@@ -52,10 +52,10 @@ def CheckStatus(arr)
       error = true
     elsif hash["available"] == true then
       error = true
-      hash.store("error", "available is true")
+      hash.store("error", "available is true.")
     elsif hash["expires_on"] == "N/A" then
       error = true
-      hash.store("error", "expires_on is null")
+      hash.store("error", "expires_on is Empty.")
     else
       begin
         expires = Time.parse(hash["expires_on"])
@@ -65,7 +65,20 @@ def CheckStatus(arr)
         end
       rescue => e
         error = true
-        hash.store("error", "expires_on Time Data error.")
+        hash.store("error", "expires_on Time is Over.")
+      end
+    end
+
+    if !error && !hash["nameservers"].nil? then
+      dns_match = false
+      validDNS.each do |dns|
+        hit = hash["nameservers"].grep(Regexp.new(dns))
+        dns_match = true if hit.length == 0
+      end
+
+      unless dns_match then
+        error = true
+        hash.store("error", "expires_on Time is Over.")
       end
     end
 
