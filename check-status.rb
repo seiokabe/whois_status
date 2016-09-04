@@ -42,8 +42,6 @@ OptionParser.new do |opts|
 end
 
 object = ARGV.shift
-now  = Time.now
-puts now
 
 def CheckStatus(arr)
   errDomain = Array.new()
