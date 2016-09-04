@@ -8,7 +8,6 @@ require 'date'
 require 'time'
 
 ValidDNS = [ "nexia.jp", "awsdns" ]
-CheckDns = false
 
 options = {}
 OptionParser.new do |opts|
@@ -29,7 +28,7 @@ OptionParser.new do |opts|
   end
 
   opts.on("--checkdns","nameserver checking option") do
-    CheckDns = true
+    options[:checkdns] = true
   end
 
   opts.on_tail("-h", "--help", "show this help and exit") do
@@ -74,7 +73,7 @@ def CheckStatus(arr)
       end
     end
 
-    if ( CheckDns && error == false && hash["nameservers"].nil? == false ) then
+    if ( options[:checkdns] && error == false && hash["nameservers"].nil? == false ) then
       # print("====== ", hash["domain"], "\n")
       dns_match = false
       ValidDNS.each do |dns|
