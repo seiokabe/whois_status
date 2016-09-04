@@ -7,7 +7,7 @@ require 'pp'
 require 'date'
 require 'time'
 
-ValidDNS = [ "nexia.jp", "awsdns" ]
+ValidDNS = [ "nexia.jp", "awsdns", 'ns1.xserver.jp' ]
 
 class CheckDns
   def initialize()
