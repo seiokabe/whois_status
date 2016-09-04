@@ -5,6 +5,9 @@ require 'optparse'
 require 'json'
 require 'pp'
 require 'date'
+require 'time'
+
+validDNS = [ "nexia.jp", "awsdns" ]
 
 options = {}
 OptionParser.new do |opts|
@@ -39,8 +42,8 @@ OptionParser.new do |opts|
 end
 
 object = ARGV.shift
-today  = Date.today
-puts today
+now  = Time.now
+puts now
 
 def CheckStatus(arr)
   error = false
@@ -48,9 +51,19 @@ def CheckStatus(arr)
   arr.each{|hash|
     error = true unless hash["status"]
     error = true if hash["available"]
-    # if hash[:expires_on]
+
+    if hash["expires_on"] == "N/A" then
+      error = true
+    else
+      begin
+        expires = Time.parse( hash["expires_on"] )
+        error = true if Time.now > expires
+      rescue => e
+        error = true
+      end
+    end
+
     errDomain.push(hash) if error
-    # print("Error: ", hash["domain"], "\n") if error
   }
   return errDomain
 end
