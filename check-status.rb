@@ -7,7 +7,7 @@ require 'pp'
 require 'date'
 require 'time'
 
-validDNS = [ "nexia.jp", "awsdns" ]
+ValidDNS = [ "nexia.jp", "awsdns" ]
 
 options = {}
 OptionParser.new do |opts|
@@ -71,7 +71,7 @@ def CheckStatus(arr)
 
     if !error && !hash["nameservers"].nil? then
       dns_match = false
-      validDNS.each do |dns|
+      ValidDNS.each do |dns|
         hit = hash["nameservers"].grep(Regexp.new(dns))
         dns_match = true if hit.length == 0
       end
