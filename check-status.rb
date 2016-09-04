@@ -71,7 +71,7 @@ def CheckStatus(arr)
       end
     end
 
-    print("Error: ", hash["domain"], "\n") if error
+    # print("Error: ", hash["domain"], "\n") if error
     errDomain.push(hash) if error
 
   }
