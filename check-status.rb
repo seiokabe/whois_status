@@ -46,16 +46,17 @@ def CheckStatus(arr)
   error = false
   errDomain = Array.new()
   arr.each{|hash|
-    pp hash
-    error = false unless hash[:status]
-    error = false if     hash[:available]
+    # pp hash
+    error = true unless hash[:status]
+    error = true if hash[:available]
     # if hash[:expires_on]
     errDomain.push(hash) if error
+    puts hash[:domain] if error
   }
   return errDomain
 end
 
 File.open(options[:jsonfile]) do |file|
   arr = JSON.load(file)
-  pp CheckStatus(arr)
+  err = CheckStatus(arr)
 end
