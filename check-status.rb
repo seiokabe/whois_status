@@ -9,6 +9,15 @@ require 'time'
 
 ValidDNS = [ "nexia.jp", "awsdns" ]
 
+class CheckDns
+  def initialize()
+    @flag = false
+  end
+  attr_accessor :flag
+end
+
+checkdns = CheckDns.new()
+
 options = {}
 OptionParser.new do |opts|
   opts.banner     = "check-status.rb: whois status check."
@@ -28,7 +37,7 @@ OptionParser.new do |opts|
   end
 
   opts.on("--checkdns","nameserver checking option") do
-    options[:checkdns] = true
+    checkdns.flag = true
   end
 
   opts.on_tail("-h", "--help", "show this help and exit") do
@@ -73,7 +82,7 @@ def CheckStatus(arr)
       end
     end
 
-    if ( options[:checkdns] && error == false && hash["nameservers"].nil? == false ) then
+    if ( checkdns.flag && error == false && hash["nameservers"].nil? == false ) then
       # print("====== ", hash["domain"], "\n")
       dns_match = false
       ValidDNS.each do |dns|
