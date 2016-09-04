@@ -49,17 +49,25 @@ def CheckStatus(arr)
   error = false
   errDomain = Array.new()
   arr.each{|hash|
-    error = true unless hash["status"]
-    error = true if hash["available"]
-
-    if hash["expires_on"] == "N/A" then
+    if hash["status"] == false then
       error = true
+    elsif hash["available"] == true then
+      error = true
+      hash.store("error", "available is true")
+    elsif hash["expires_on"] == "N/A" then
+      error = true
+      hash.store("error", "expires_on is null")
     else
       begin
-        expires = Time.parse( hash["expires_on"] )
-        error = true if Time.now > expires
+        expires = Time.parse(hash["expires_on"])
+        if Time.now > expires then
+          puts expires
+          error = true
+          hash.store("error", "domain Expired.")
+        end
       rescue => e
         error = true
+        hash.store("error", "expires_on Time Data error.")
       end
     end
 
