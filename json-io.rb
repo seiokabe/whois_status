@@ -4,8 +4,7 @@ require 'rubygems'
 require 'optparse'
 require 'json'
 require 'pp'
-require 'ap'
-
+require "awesome_print"
 
 options = {}
 OptionParser.new do |opts|
@@ -13,7 +12,7 @@ OptionParser.new do |opts|
   opts.define_head  "Usage: whois.rb [options]"
   opts.separator    ""
   opts.separator    "Examples:"
-  opts.separator    " json-io.rb -j <json file>"
+  opts.separator    " json-io.rb -j <json file> [--ap]"
   opts.separator    " json-io.rb -t <text line file>"
   opts.separator    ""
   opts.separator    "Options:"
@@ -26,16 +25,16 @@ OptionParser.new do |opts|
     options[:jsonfile] = jsonfile
   end
 
+  opts.on_tail("--ap", "Awesome Print Mode") do
+    options[:ap] = true
+  end
+
   opts.on("-t", "--text [TEXT FILE]", String, "import TEXT filename") do |textfile|
     unless textfile then
       print("Error: -text, --text option, requires additional arguments.\n\n")
       exit 1
     end
     options[:textfile] = textfile
-  end
-
-  opts.on_tail("--ap", "Awesome Print Mode") do
-    options[:ap] = true
   end
 
   opts.on_tail("-h", "--help", "show this help and exit") do
@@ -74,7 +73,7 @@ else
   File.open(options[:jsonfile]) do |file|
     hash = JSON.load(file)
     if options[:ap] then
-      ap Hash
+      ap hash ,:indent => -2
     else
       pp hash
     end
