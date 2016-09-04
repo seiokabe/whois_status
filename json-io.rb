@@ -4,6 +4,8 @@ require 'rubygems'
 require 'optparse'
 require 'json'
 require 'pp'
+require 'ap'
+
 
 options = {}
 OptionParser.new do |opts|
@@ -30,6 +32,10 @@ OptionParser.new do |opts|
       exit 1
     end
     options[:textfile] = textfile
+  end
+
+  opts.on_tail("--ap", "Awesome Print Mode") do
+    options[:ap] = true
   end
 
   opts.on_tail("-h", "--help", "show this help and exit") do
@@ -67,7 +73,8 @@ else
 
   File.open(options[:jsonfile]) do |file|
     hash = JSON.load(file)
-    pp hash
+    ap hash if options[:ap]
+    pp hash else
     # puts PP.pp(hash, '')
   end
 

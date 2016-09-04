@@ -4,3 +4,4 @@ source "https://rubygems.org"
 
 # gem "rails"
 gem 'whois', '~> 3.6.5'
+gem 'awesome_print'
