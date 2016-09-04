@@ -49,17 +49,17 @@ object = ARGV.shift
 
 if options[:textfile] then
 
-  array_domains = Array.new()
+  array = Array.new()
 
   File.read(options[:textfile]).each_line do |line|
     line.chop!
-    next if domain =~ /^$/
-    next if domain =~ /^#/
-    array_domains.push(line)
+    next if line =~ /^$/
+    next if line =~ /^#/
+    array.push(line)
   end
 
-  if array_domains.length > 0 then
-    puts JSON.pretty_generate(array_domains)
+  if array.length > 0 then
+    puts JSON.pretty_generate(array)
   end
 
 else
