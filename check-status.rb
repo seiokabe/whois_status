@@ -70,7 +70,7 @@ def CheckStatus(arr)
     end
 
     if ( error == false && hash["nameservers"].nil? == false ) then
-      print("====== ", hash["domain"], "\n")
+      # print("====== ", hash["domain"], "\n")
       dns_match = false
       ValidDNS.each do |dns|
         # puts dns
@@ -84,7 +84,7 @@ def CheckStatus(arr)
 
       unless dns_match then
         error = true
-        hash.store("error", "expires_on Time is Over.")
+        hash.store("error", "nameservers is not found.")
       end
     end
 
