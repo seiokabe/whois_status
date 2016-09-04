@@ -73,9 +73,11 @@ else
 
   File.open(options[:jsonfile]) do |file|
     hash = JSON.load(file)
-    ap hash if options[:ap]
-    pp hash else
-    # puts PP.pp(hash, '')
+    if options[:ap] then
+      ap Hash
+    else
+      pp hash
+    end
   end
 
 end
