@@ -16,7 +16,7 @@ class CheckDns
   attr_accessor :flag
 end
 
-checkdns = CheckDns.new()
+CD = CheckDns.new()
 
 options = {}
 OptionParser.new do |opts|
@@ -37,7 +37,7 @@ OptionParser.new do |opts|
   end
 
   opts.on("--checkdns","nameserver checking option") do
-    checkdns.flag = true
+    CD.flag = true
   end
 
   opts.on_tail("-h", "--help", "show this help and exit") do
@@ -82,7 +82,7 @@ def CheckStatus(arr)
       end
     end
 
-    if ( checkdns.flag && error == false && hash["nameservers"].nil? == false ) then
+    if ( CD.flag && error == false && hash["nameservers"].nil? == false ) then
       # print("====== ", hash["domain"], "\n")
       dns_match = false
       ValidDNS.each do |dns|
