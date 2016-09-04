@@ -57,7 +57,7 @@ end
 
 object = ARGV.shift
 
-Wclient = Whois::Client.new(:timeout => 5)
+Wclient = Whois::Client.new(:timeout => 15)
 
 class Time
   def timezone(timezone = 'UTC')
