@@ -148,10 +148,10 @@ jp_domain_count = 0
 array_domains.each do |str_domain|
 
   if jp_domain_count > 10 then
-    sleep(60)
-    jp_domain_count = 0
+    sleep(2)
+    # jp_domain_count = 0
   end
-  jp_domain_count += 1
+  jp_domain_count += 1 if str_domain =~ /\.jp/i
 
   data = whois_get(str_domain)
   if options[:text] then
