@@ -1,0 +1,6 @@
+# frozen_string_literal: true
+# A sample Gemfile
+source "https://rubygems.org"
+
+# gem "rails"
+gem 'whois', '~> 3.6.5'
