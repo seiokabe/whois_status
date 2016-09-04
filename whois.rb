@@ -144,9 +144,9 @@ if array_domains.length == 0 then
 end
 
 jsondata = Array.new()
+jp_domain_count = 0
 array_domains.each do |str_domain|
 
-  jp_domain_count = 0
   if jp_domain_count > 10 then
     sleep(60)
     jp_domain_count = 0
