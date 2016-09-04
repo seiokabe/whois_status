@@ -46,12 +46,11 @@ def CheckStatus(arr)
   error = false
   errDomain = Array.new()
   arr.each{|hash|
-    print
     error = true unless hash["status"]
     error = true if hash["available"]
     # if hash[:expires_on]
     errDomain.push(hash) if error
-    print("Error: ", hash["domain"], "\n") if error
+    # print("Error: ", hash["domain"], "\n") if error
   }
   return errDomain
 end
@@ -59,4 +58,5 @@ end
 File.open(options[:jsonfile]) do |file|
   arr = JSON.load(file)
   err = CheckStatus(arr)
+  puts JSON.pretty_generate(err)
 end
