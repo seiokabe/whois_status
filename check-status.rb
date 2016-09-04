@@ -4,6 +4,7 @@ require 'rubygems'
 require 'optparse'
 require 'json'
 require 'pp'
+require 'date'
 
 options = {}
 OptionParser.new do |opts|
@@ -38,14 +39,23 @@ OptionParser.new do |opts|
 end
 
 object = ARGV.shift
+today  = Date.today
+puts today
 
 def CheckStatus(arr)
+  error = false
+  errDomain = Array.new()
   arr.each{|hash|
     pp hash
+    error = false unless hash[:status]
+    error = false if     hash[:available]
+    # if hash[:expires_on]
+    errDomain.push(hash) if error
   }
+  return errDomain
 end
 
 File.open(options[:jsonfile]) do |file|
   arr = JSON.load(file)
-  CheckStatus(arr)
+  pp CheckStatus(arr)
 end
