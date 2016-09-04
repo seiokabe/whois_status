@@ -3,6 +3,7 @@
 require 'rubygems'
 require 'optparse'
 require 'json'
+require 'pp'
 
 options = {}
 OptionParser.new do |opts|
@@ -66,7 +67,8 @@ else
 
   File.open(options[:jsonfile]) do |file|
     hash = JSON.load(file)
-    p hash
+    pp hash
+    # puts PP.pp(hash, '')
   end
 
 end
