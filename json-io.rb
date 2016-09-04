@@ -1,3 +1,7 @@
+#!/usr/bin/env ruby
+
+require 'rubygems'
+require 'optparse'
 require 'json'
 
 options = {}
