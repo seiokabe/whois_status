@@ -148,11 +148,11 @@ jp_domain_count = 0
 array_domains.each do |str_domain|
 
   if str_domain =~ /\.jp/i then
-    JP = true
+    jp_doman = true
     jp_domain_count += 1
   end
 
-  if JP && (jp_domain_count > 10) then
+  if jp_domain && (jp_domain_count > 10) then
     sleep(2)
     sleep(3) if jp_domain_count % 4 == 0
     # jp_domain_count = 0
