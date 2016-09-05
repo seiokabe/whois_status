@@ -2,6 +2,9 @@
 .bundle
 pkg/*
 
+# docker files
+.Docker
+
 *~
 OLD
 *.json
