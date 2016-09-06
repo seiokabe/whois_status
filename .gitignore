@@ -3,7 +3,7 @@
 pkg/*
 
 # docker files
-.Docker
+##.Docker
 
 *~
 OLD

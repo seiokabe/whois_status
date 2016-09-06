@@ -1,0 +1,15 @@
+## docker images build & run, exec
+
+docker build -t okabe/whois-ruby .
+
+docker run -it --rm okabe/whois-ruby /bin/bash
+
+docker run -it --rm okabe/whois-ruby ./whois.rb -h
+docker run -it --rm okabe/whois-ruby ./whois.rb -d playizm.com -d kinsei.io --text 
+docker run -it --rm okabe/whois-ruby ./whois.rb -f domain.txt
+
+## run -d
+docker run -d -it --name whois-ruby okabe/whois-ruby /bin/bash
+docker ps
+docker exec -it whois-ruby ./whois.rb -d unist55.com
+
