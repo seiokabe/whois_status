@@ -13,3 +13,6 @@ docker run -d -it --name whois-ruby okabe/whois-ruby /bin/bash
 docker ps
 docker exec -it whois-ruby ./whois.rb -d unist55.com
 
+## Volume mount option
+## vi /tmp/Files/domain.txt ( status get domain list )
+docker run -it -v /tmp/Files:/tmp/Files --rm okabe/whois-ruby ./whois.rb -f /tmp/Files/domain.txt --text
