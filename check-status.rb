@@ -64,13 +64,6 @@ OptionParser.new do |opts|
   end
 end
 
-if options[:jsonfile].nil? then
-  print("\n Error: Json File Option.\n\n")
-  print(" show help\n")
-  print("           check-status.rb --help\n\n")
-  exit 1
-end
-
 object = ARGV.shift
 
 def CheckStatus(arr)
@@ -130,8 +123,15 @@ def CheckStatus(arr)
   return errDomain
 end
 
-File.open(options[:jsonfile]) do |file|
-  arr = JSON.load(file)
-  err = CheckStatus(arr)
-  puts JSON.pretty_generate(err)
+if options[:jsonfile] then
+  File.open(options[:jsonfile]) do |file|
+    arr = JSON.load(file)
+    err = CheckStatus(arr)
+    puts JSON.pretty_generate(err)
+  end
+else
+  print("\n Error: Json File Option.\n\n")
+  print(" show help\n")
+  print("           check-status.rb --help\n\n")
+  exit 1
 end
