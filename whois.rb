@@ -136,7 +136,8 @@ end
 if array_domains.length == 0 then
   file = (options[:filename].nil?) ? defDomainListFile : "#{options[:filename]}"
   File.read(file).each_line do |domain|
-    domain.chop!
+    # domain.chop!
+    domain.rstrip!
     next if domain =~ /^$/
     next if domain =~ /^#/
     array_domains.push(domain)

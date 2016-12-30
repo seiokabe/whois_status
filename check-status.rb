@@ -12,8 +12,10 @@ ValidDNS = [ "nexia.jp", "awsdns", 'ns1.xserver.jp' ]
 class CheckDns
   def initialize()
     @flag = false
+    @beforeDays = 0
   end
   attr_accessor :flag
+  attr_accessor :beforeDays
 end
 
 CD = CheckDns.new()
@@ -36,8 +38,16 @@ OptionParser.new do |opts|
     options[:jsonfile] = jsonfile
   end
 
-  opts.on("--checkdns","nameserver checking option") do
+  opts.on("--checkDns","nameserver checking option") do
     CD.flag = true
+  end
+
+  opts.on("--checkBeforeDays [Int Days]", Integer, "check Before Expired Days") do |days|
+    unless days then
+      CD.beforeDays = 0
+    else
+      CD.beforeDays = days
+    end
   end
 
   opts.on_tail("-h", "--help", "show this help and exit") do
@@ -54,14 +64,25 @@ OptionParser.new do |opts|
   end
 end
 
+if options[:jsonfile].nil? then
+  print("\n Error: Json File Option.\n\n")
+  print(" show help\n")
+  print("           check-status.rb --help\n\n")
+  exit 1
+end
+
 object = ARGV.shift
 
 def CheckStatus(arr)
   errDomain = Array.new()
   arr.each{|hash|
     error = false
+    # pp hash
 
-    if hash["status"] == false then
+    if hash["status"].nil? == true then
+      error = true
+      hash.store("error", "whois json data. status nil.")
+    elsif hash["status"] == false then
       error = true
     elsif hash["available"] == true then
       error = true
@@ -72,7 +93,8 @@ def CheckStatus(arr)
     else
       begin
         expires = Time.parse(hash["expires_on"])
-        if Time.now > expires then
+        time = Time.now + ( CD.beforeDays * 60 * 60 * 24 )
+        if time > expires then
           error = true
           hash.store("error", "domain Expired.")
         end
