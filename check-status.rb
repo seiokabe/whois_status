@@ -7,7 +7,7 @@ require 'pp'
 require 'date'
 require 'time'
 
-ValidDNS = [ "nexia.jp", "awsdns", 'ns1.xserver.jp' ]
+ValidDNS = [ "nexia.jp", "awsdns-", 'ns1.xserver.jp' ]
 
 class CheckDns
   def initialize()
@@ -44,7 +44,7 @@ OptionParser.new do |opts|
 
   opts.on("--checkBeforeDays [Int Days]", Integer, "check Before Expired Days") do |days|
     unless days then
-      CD.beforeDays = 0
+      CD.beforeDays = -1
     else
       CD.beforeDays = days
     end
@@ -123,15 +123,26 @@ def CheckStatus(arr)
   return errDomain
 end
 
-if options[:jsonfile] then
-  File.open(options[:jsonfile]) do |file|
-    arr = JSON.load(file)
-    err = CheckStatus(arr)
-    puts JSON.pretty_generate(err)
+if $stdin.tty?
+  if options[:jsonfile] then
+    File.open(options[:jsonfile]) do |file|
+      arr = JSON.load(file)
+      err = CheckStatus(arr)
+      puts JSON.pretty_generate(err)
+    end
+    exit 0
   end
 else
-  print("\n Error: Json File Option.\n\n")
-  print(" show help\n")
-  print("           check-status.rb --help\n\n")
-  exit 1
+  lines = ""
+  while str = $stdin.gets
+    lines << str
+  end
+  arr = JSON.load(lines)
+  err = CheckStatus(arr)
+  puts JSON.pretty_generate(err)
+  exit 0
 end
+
+print("\n Error: NotFound whois Json data.\n\n")
+print(" show help\n")
+print("           check-status.rb --help\n\n")
