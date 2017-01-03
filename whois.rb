@@ -148,11 +148,12 @@ jsondata = Array.new()
 jp_domain_count = 0
 array_domains.each do |str_domain|
 
+  # STDERR.puts(Time.now.sec)
+  # STDERR.puts(str_domain)
+
   if str_domain =~ /\.jp/i then
-    if jp_domain_count > 5 then
-      sleep(5)
-      # sleep(5) if (jp_domain_count % 5 == 0)
-    end
+    sleep(3) if (jp_domain_count > 1)
+    sleep(2) if (jp_domain_count % 2 == 0)
     jp_domain_count += 1
   end
 
