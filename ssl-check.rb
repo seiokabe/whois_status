@@ -154,13 +154,24 @@ def getSSLstatus(url, options)
 end
 
 if array_hosts.length == 0 then
-  file = (options[:filename].nil?) ? defUrlListFile : "#{options[:filename]}"
-  File.read(file).each_line do |target|
-    target.rstrip!
-    next if target =~ /^$/
-    next if target =~ /^#/
-    array_hosts.push(target)
+
+  if $stdin.tty?
+    file = (options[:filename].nil?) ? defUrlListFile : "#{options[:filename]}"
+    File.read(file).each_line do |target|
+      target.rstrip!
+      next if target =~ /^$/
+      next if target =~ /^#/
+      array_hosts.push(target)
+    end
+  else
+      while line = $stdin.gets
+        line.rstrip!
+        next if line =~ /^$/
+        next if line =~ /^#/
+        array_hosts.push(line)
+      end
   end
+
 end
 
 resArray = Array.new()
