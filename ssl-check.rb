@@ -128,7 +128,7 @@ def getSSLstatus(url, options)
     # check period.
     hash.store("subject", @ssl.peer_cert.subject.to_s)
     hash.store("expired", @ssl.peer_cert.not_after)
-    hash.store("started", @ssl.peer_cert.not_before)
+    hash.store("registered", @ssl.peer_cert.not_before)
     # p hash
     if (hash["expired"] - Time.now) < checkSecTime
       hash.store("status", false)
