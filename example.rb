@@ -1,4 +1,4 @@
-#!/usr/bin/env ruby -n
+#!/usr/bin/env ruby
 
 # puts "hello: #{$_}" #prepend 'hello:' to each line from STDIN
 

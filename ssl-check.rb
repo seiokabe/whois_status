@@ -31,7 +31,7 @@ OptionParser.new do |opts|
   opts.define_head  "Usage: ssl-check.rb [options]"
   opts.separator    ""
   opts.separator    "Examples:"
-  opts.separator    " ssl-check.rb --host example.jp -d example.com:9443"
+  opts.separator    " ssl-check.rb --host example.jp --host example.com:9443"
   opts.separator    " ssl-check.rb -f <SSL_URL_LIST_filename>"
   opts.separator    ""
   opts.separator    "Options:"
