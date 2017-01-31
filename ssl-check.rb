@@ -41,7 +41,8 @@ OptionParser.new do |opts|
       print("Error: --host option, requires additional arguments.\n\n")
       exit 1
     end
-    array_hosts.push('https://' + host)
+    host = 'https://' + host unless host =~ /^https:\/\//
+    array_hosts.push(host)
   end
 
   opts.on("--file [FILE NAME]", String, "SSL URL list filename (Default: #{defUrlListFile})") do |filename|
@@ -161,7 +162,7 @@ if array_hosts.length == 0 then
       target.rstrip!
       next if target =~ /^$/
       next if target =~ /^#/
-      target = 'https://' + target if target =~ /^https:\/\//
+      target = 'https://' + target unless target =~ /^https:\/\//
       array_hosts.push(target)
     end
   else
@@ -169,11 +170,14 @@ if array_hosts.length == 0 then
         line.rstrip!
         next if line =~ /^$/
         next if line =~ /^#/
+        line = 'https://' + line unless line =~ /^https:\/\//
         array_hosts.push(line)
       end
   end
 
 end
+
+p array_hosts
 
 resArray = Array.new()
 array_hosts.each do |url|
