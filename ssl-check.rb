@@ -161,7 +161,7 @@ if array_hosts.length == 0 then
       target.rstrip!
       next if target =~ /^$/
       next if target =~ /^#/
-      target = 'https://' + target if target =~ /^https:¥/¥//
+      target = 'https://' + target if target =~ /^https:\/\//
       array_hosts.push(target)
     end
   else
