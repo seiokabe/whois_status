@@ -177,7 +177,7 @@ if array_hosts.length == 0 then
 
 end
 
-p array_hosts
+p array_hosts if options[:debug]
 
 resArray = Array.new()
 array_hosts.each do |url|
