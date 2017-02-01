@@ -153,7 +153,7 @@ array_domains.each do |str_domain|
 
   if str_domain =~ /\.jp/i then
     sleep(3) if (jp_domain_count > 1)
-    sleep(2) if (jp_domain_count % 2 == 0)
+    sleep(5) if (jp_domain_count % 2 == 0)
     jp_domain_count += 1
   end
 
