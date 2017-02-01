@@ -105,14 +105,16 @@ def getSSLstatus(url, options)
   checkSecTime = GS.checkBeforeDays * 60 * 60 * 24
 
   # set SSL config
-  ssl_conf = SSL::SSLContext.new()
-  # ssl_conf.verify_mode=SSL::VERIFY_PEER
+  ssl_context = SSL::SSLContext.new()
+  ssl_context.ssl_version = :TLSv1
+  # ssl_context.verify_mode=SSL::VERIFY_PEER
 
   # create ssl connection.
   begin
     Timeout.timeout(GS.timeout) {
       @soc = TCPSocket.new(uri.host.to_s, uri.port.to_i)
-      @ssl = SSL::SSLSocket.new(@soc, ssl_conf)
+      @ssl = SSL::SSLSocket.new(@soc, ssl_context)
+      @ssl.hostname = uri.host.to_s
       @ssl.connect
     }
 
