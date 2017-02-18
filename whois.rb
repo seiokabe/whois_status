@@ -57,7 +57,7 @@ end
 
 object = ARGV.shift
 
-Wclient = Whois::Client.new(:timeout => 15)
+Wclient = Whois::Client.new(:timeout => 30)
 
 class Time
   def timezone(timezone = 'UTC')
@@ -134,13 +134,22 @@ def whois_get(d)
 end
 
 if array_domains.length == 0 then
-  file = (options[:filename].nil?) ? defDomainListFile : "#{options[:filename]}"
-  File.read(file).each_line do |domain|
-    # domain.chop!
-    domain.rstrip!
-    next if domain =~ /^$/
-    next if domain =~ /^#/
-    array_domains.push(domain)
+  if $stdin.tty?
+    file = (options[:filename].nil?) ? defDomainListFile : "#{options[:filename]}"
+    File.read(file).each_line do |domain|
+      # domain.chop!
+      domain.rstrip!
+      next if domain =~ /^$/
+      next if domain =~ /^#/
+      array_domains.push(domain)
+    end
+  else
+    while line = $stdin.gets
+      line.rstrip!
+      next if line =~ /^$/
+      next if line =~ /^#/
+      array_domains.push(line)
+    end
   end
 end
 
@@ -157,7 +166,11 @@ array_domains.each do |str_domain|
     jp_domain_count += 1
   end
 
-  data = whois_get(str_domain)
+  for i in 1..3 do
+    data = whois_get(str_domain)
+    break if data["error"].nil?
+  end
+
   if options[:text] then
     PrintHash(data)
   else
