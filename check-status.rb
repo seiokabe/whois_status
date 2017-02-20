@@ -128,7 +128,7 @@ if $stdin.tty?
     File.open(options[:jsonfile]) do |file|
       arr = JSON.load(file)
       err = CheckStatus(arr)
-      puts JSON.pretty_generate(err)
+      puts JSON.pretty_generate(err) if err.length > 0
     end
     exit 0
   end
@@ -139,7 +139,7 @@ else
   end
   arr = JSON.load(lines)
   err = CheckStatus(arr)
-  puts JSON.pretty_generate(err)
+  puts JSON.pretty_generate(err) if err.length > 0
   exit 0
 end
 
