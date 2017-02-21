@@ -57,8 +57,6 @@ end
 
 object = ARGV.shift
 
-Wclient = Whois::Client.new(:timeout => 30)
-
 class Time
   def timezone(timezone = 'UTC')
     old = ENV['TZ']
@@ -93,7 +91,9 @@ def WhoisGet(domain)
      return _hash
   end
 
-  ans = Wclient.lookup(domain)
+  wclient = Whois::Client.new(:timeout => 30)
+
+  ans = wclient.lookup(domain)
 
   hash.store("domain", domain)
 
