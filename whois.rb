@@ -57,7 +57,7 @@ end
 
 object = ARGV.shift
 
-Wclient = Whois::Client.new(:timeout => 10)
+Wclient = Whois::Client.new(:timeout => 30)
 
 class Time
   def timezone(timezone = 'UTC')
@@ -68,6 +68,19 @@ class Time
     ENV['TZ'] = old
     output
   end
+end
+
+def testWhois(debug)
+  array = ["google.com", "docker.io", "google.co.jp", "softbank.jp"]
+  array.each{|d|
+    puts("domain: #{d}") if debug
+    begin
+      data = WhoisGet(d)
+      puts JSON.pretty_generate(data) if debug
+    rescue => e
+      puts e if debug
+    end
+  }
 end
 
 def WhoisGet(domain)
@@ -154,6 +167,9 @@ if array_domains.length == 0 then
     end
   end
 end
+
+## test whois  args true is 'debug print'
+testWhois(true)
 
 jsondata = Array.new()
 jp_domain_count = 0
