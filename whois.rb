@@ -169,7 +169,8 @@ if array_domains.length == 0 then
 end
 
 ## test whois  args true is 'debug print'
-testWhois(true)
+# testWhois(true)
+testWhois(false)
 
 jsondata = Array.new()
 jp_domain_count = 0
