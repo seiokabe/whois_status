@@ -87,14 +87,14 @@ def WhoisGet(domain)
   available  = (ans.available?.nil?)  ? "N/A" : ans.available?
   registered = (ans.registered?.nil?) ? "N/A" : ans.registered?
   # expires_on = (ans.expires_on.nil?)  ? "N/A" : "#{ans.expires_on.timezone('Asia/Tokyo')} (Origin: #{ans.expires_on})"
-  expires_on = (ans.expires_on.nil?)  ? "N/A" : ans.expires_on.timezone('Asia/Tokyo')
+  expires_on = (ans.expires_on.nil?)  ? "0" : ans.expires_on.timezone('Asia/Tokyo')
   registrar  = (ans.registrar.nil?)   ? "N/A" : ans.registrar.name
   # created_on = (ans.created_on.nil?)  ? "N/A" : "#{ans.created_on.timezone('Asia/Tokyo')} (Origin: #{ans.created_on})"
   # updated_on = (ans.updated_on.nil?)  ? "N/A" : "#{ans.updated_on.timezone('Asia/Tokyo')} (Origin: #{ans.updated_on})"
   created_on = (ans.created_on.nil?)  ? "N/A" : ans.created_on.timezone('Asia/Tokyo')
   updated_on = (ans.updated_on.nil?)  ? "N/A" : ans.updated_on.timezone('Asia/Tokyo')
 
-  hash.store("status", true)
+  hash.store("status", false)
   hash.store("available",  available)
   hash.store("registered", registered)
   hash.store("expires_on", expires_on)
@@ -123,13 +123,15 @@ end
 def whois_get(d)
   begin
     data = WhoisGet(d)
+    data.store("status", true)
     return data
   rescue => e
-    hash = Hash.new(d)
-    hash.store("domain", d)
-    hash.store("status", false)
-    hash.store("error", e.message)
-    return hash
+    data = Hash.new()
+    data.store("domain", d)
+    data.store("status", false)
+    data.store("expires_on", "0")
+    data.store("error", e.message)
+    return data
   end
 end
 
