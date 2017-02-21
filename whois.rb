@@ -186,6 +186,7 @@ array_domains.each do |str_domain|
   end
 
   for i in 1..3 do
+    puts("whois_get: #{str_domain}")
     data = whois_get(str_domain)
     break if data["error"].nil?
   end
