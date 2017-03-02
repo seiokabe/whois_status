@@ -3,14 +3,13 @@
 
 require 'rubygems'
 require 'optparse'
+require 'net/http'
 require 'uri'
 require 'json'
 require 'socket'
 require 'openssl'
 require 'timeout'
 include OpenSSL
-
-defUrlListFile = "ssl.txt"
 
 class GlobalSet
   def initialize()
@@ -27,12 +26,13 @@ array_hosts = Array.new()
 
 options = {}
 OptionParser.new do |opts|
-  opts.banner     = "ssl-check.rb: an intelligent pure Ruby SSL expired status check"
+  opts.banner     = "ssl-check-status.rb: an intelligent pure Ruby SSL expired status check"
   opts.define_head  "Usage: ssl-check.rb [options]"
   opts.separator    ""
   opts.separator    "Examples:"
-  opts.separator    " ssl-check.rb --host example.jp --host example.com:9443"
-  opts.separator    " ssl-check.rb -f <SSL_URL_LIST_filename>"
+  opts.separator    " ssl-check-status.rb --url <URL> -v"
+  opts.separator    " ssl-check-status.rb --host example.jp --host example.com:9443"
+  opts.separator    " ssl-check-status.rb -f <SSL_URL_LIST_filename>"
   opts.separator    ""
   opts.separator    "Options:"
 
@@ -45,8 +45,20 @@ OptionParser.new do |opts|
     array_hosts.push(host)
   end
 
-  opts.on("--file [FILE NAME]", String, "SSL URL list filename (Default: #{defUrlListFile})") do |filename|
+  opts.on("--file [FILE NAME]", String, "SSL URL list filename") do |filename|
+    unless filename then
+      print("Error: --file option, requires additional arguments.\n\n")
+      exit 1
+    end
     options[:filename] = filename
+  end
+
+  opts.on("--url [url address]", String, "import JSON URL") do |url|
+    unless url then
+      print("Error: --url option, requires additional arguments.\n\n")
+      exit 1
+    end
+    options[:url] = url
   end
 
   opts.on("--checkBeforeDays [int Days]", Integer, "check Before Expired Days. (Default: 0 [today])") do |days|
@@ -159,13 +171,34 @@ end
 if array_hosts.length == 0 then
 
   if $stdin.tty?
-    file = (options[:filename].nil?) ? defUrlListFile : "#{options[:filename]}"
-    File.read(file).each_line do |target|
-      target.rstrip!
-      next if target =~ /^$/
-      next if target =~ /^#/
-      target = 'https://' + target unless target =~ /^https:\/\//
-      array_hosts.push(target)
+    if options[:filename] then
+      File.read(options[:filename]).each_line do |target|
+        target.rstrip!
+        next if target =~ /^$/
+        next if target =~ /^#/
+        target = 'https://' + target unless target =~ /^https:\/\//
+        array_hosts.push(target)
+      end
+    elsif options[:url]
+      if options[:url].match(/^https/).nil? then
+        options[:url] = 'https://' + options[:url]
+      end
+      uri = URI.parse(options[:url])
+      params = {'User-Agent' => "curl"}
+      https = Net::HTTP.new(uri.host, uri.port)
+      https.use_ssl = true
+      res = https.start {
+        https.get(uri.request_uri, params)
+      }
+      if res.code == '200'
+        res.body.each_line do |target|
+          target.rstrip!
+          next if target =~ /^$/
+          next if target =~ /^#/
+          target = 'https://' + target unless target =~ /^https:\/\//
+          array_hosts.push(target)
+        end
+      end
     end
   else
       while line = $stdin.gets
