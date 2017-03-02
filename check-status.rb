@@ -6,6 +6,8 @@ require 'json'
 require 'pp'
 require 'date'
 require 'time'
+require 'net/http'
+require 'uri'
 
 ValidDNS = [ "nexia.jp", "awsdns-", 'ns1.xserver.jp' ]
 
@@ -36,6 +38,14 @@ OptionParser.new do |opts|
       exit 1
     end
     options[:jsonfile] = jsonfile
+  end
+
+  opts.on("-u", "--url [url address]", String, "import JSON URL") do |url|
+    unless url then
+      print("Error: -u, --url option, requires additional arguments.\n\n")
+      exit 1
+    end
+    options[:url] = url
   end
 
   opts.on("--checkDns","nameserver checking option") do
@@ -131,6 +141,23 @@ if $stdin.tty?
       puts JSON.pretty_generate(err) if err.length > 0
     end
     exit 0
+  elsif options[:url] then
+    uri = URI.parse(options[:url])
+    params = {'User-Agent' => "curl"}
+    https = Net::HTTP.new(uri.host, uri.port)
+    https.use_ssl = true
+    res = https.start {
+      https.get(uri.request_uri, params)
+    }
+    if res.code == '200'
+      arr = JSON.parse(res.body)
+      err = CheckStatus(arr)
+      puts JSON.pretty_generate(err) if err.length > 0
+      exit 0
+    else
+      puts "Error: #{res.code} #{res.message}"
+      exit 1
+    end
   end
 else
   lines = ""
