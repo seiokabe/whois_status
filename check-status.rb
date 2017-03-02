@@ -142,6 +142,9 @@ if $stdin.tty?
     end
     exit 0
   elsif options[:url] then
+    if options[:url].match(/^https/).nil? then
+      options[:url] = 'https://' + options[:url]
+    end
     uri = URI.parse(options[:url])
     params = {'User-Agent' => "curl"}
     https = Net::HTTP.new(uri.host, uri.port)
