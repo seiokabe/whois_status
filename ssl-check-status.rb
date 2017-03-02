@@ -170,7 +170,7 @@ end
 
 if array_hosts.length == 0 then
 
-  if $stdin.tty?
+  if $stdin.tty? or options[:filename] or options[:url]
     if options[:filename] then
       File.read(options[:filename]).each_line do |target|
         target.rstrip!

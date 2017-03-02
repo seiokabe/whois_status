@@ -133,7 +133,7 @@ def CheckStatus(arr)
   return errDomain
 end
 
-if $stdin.tty?
+if $stdin.tty? or options[:jsonfile] or options[:url]
   if options[:jsonfile] then
     File.open(options[:jsonfile]) do |file|
       arr = JSON.load(file)
