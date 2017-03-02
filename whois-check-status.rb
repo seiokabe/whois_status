@@ -24,11 +24,11 @@ CD = CheckDns.new()
 
 options = {}
 OptionParser.new do |opts|
-  opts.banner     = "check-status.rb: whois status check."
-  opts.define_head  "Usage: check-status.rb [options]"
+  opts.banner     = "whois-check-status.rb: whois status check."
+  opts.define_head  "Usage: whois-check-status.rb [options]"
   opts.separator    ""
   opts.separator    "Examples:"
-  opts.separator    " check-status.rb -j <json file>"
+  opts.separator    " whois-check-status.rb -j <json file>"
   opts.separator    ""
   opts.separator    "Options:"
 
@@ -175,4 +175,4 @@ end
 
 print("\n Error: NotFound whois Json data.\n\n")
 print(" show help\n")
-print("           check-status.rb --help\n\n")
+print("           whois-check-status.rb --help\n\n")
