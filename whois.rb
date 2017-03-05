@@ -148,6 +148,7 @@ def whois_get(d)
   end
 end
 
+
 if array_domains.length == 0 then
   if $stdin.tty?
     file = (options[:filename].nil?) ? defDomainListFile : "#{options[:filename]}"
@@ -166,11 +167,11 @@ if array_domains.length == 0 then
       array_domains.push(line)
     end
   end
-end
 
-## test whois  args true is 'debug print'
-# testWhois(true)
-testWhois(false)
+  ## test whois  args true is 'debug print'
+  # testWhois(true)
+  testWhois(false)
+end
 
 jsondata = Array.new()
 jp_domain_count = 0
