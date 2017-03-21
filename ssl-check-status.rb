@@ -77,6 +77,10 @@ OptionParser.new do |opts|
     end
   end
 
+  opts.on("--ssl-version=VALUE", [ 'TLSv1', 'TLSv1_1', 'TLSv1_2', 'SSLv3' ], "SSL Version: TLSv1(Defualt) | TLSv1_1 | TLSv1_2 | SSLv3") do |sslver|
+    options[:sslver] = sslver
+  end
+
   options[:debug] = false
   opts.on("--debug", "run debug mode") do
     options[:debug] = true
@@ -118,8 +122,8 @@ def getSSLstatus(url, options)
 
   # set SSL config
   ssl_context = SSL::SSLContext.new()
-  ssl_context.ssl_version = :TLSv1
-  # ssl_context.verify_mode=SSL::VERIFY_PEER
+  options[:sslver] = 'TLSv1' if options[:sslver].nil?
+  ssl_context.ssl_version = options[:sslver]
 
   # create ssl connection.
   begin
@@ -137,7 +141,6 @@ def getSSLstatus(url, options)
     hash.store("status", false)
     hash.store("Error", "#{e.class} #{e.message}")
   end
-
 
   if hash["status"] then
     # check period.
