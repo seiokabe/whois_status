@@ -93,6 +93,9 @@ def CheckStatus(arr)
     elsif hash["expires_on"] == "N/A" then
       error = true
       hash.store("error", "expires_on is Empty.")
+    elsif hash["nameservers"].nil? then
+      error = true
+      hash.store("error", "nameservers is Empty.")
     else
       begin
         expires = Time.parse(hash["expires_on"])
