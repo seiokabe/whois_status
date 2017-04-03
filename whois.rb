@@ -185,7 +185,8 @@ array_domains.each do |str_domain|
     for i in 1..3 do
       # puts("whois_get: #{str_domain}")
       data = whois_get(str_domain)
-      break if data["error"].nil? || data["expires_on"] != "0"
+      data["error"] = "expires_on is 0" if data["expires_on"] == "0"
+      break if data["error"].nil?
       data["error"] += ", loop: #{i}"
       sleep(error_wait_time)
     end
