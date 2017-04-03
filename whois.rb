@@ -7,7 +7,7 @@ require 'whois'
 require 'json'
 
 defDomainListFile = "domain.txt"
-
+error_wait_time   = 3 # if error whois_get then retry loop, sleep sec.
 array_domains = Array.new()
 
 options = {}
@@ -173,7 +173,6 @@ if array_domains.length == 0 then
   testWhois(false) if options[:domain].nil?
 end
 
-# jp_domain_count = 0
 jsondata = Array.new()
 threads  = Array.new()
 
@@ -183,15 +182,12 @@ locks = Queue.new
 array_domains.each do |str_domain|
   threads << Thread.new {
     lock = locks.pop
-    # if str_domain =~ /\.jp/i then
-    #   sleep(3) if (jp_domain_count > 1)
-    #   sleep(5) if (jp_domain_count % 2 == 0)
-    #   jp_domain_count += 1
-    # end
     for i in 1..3 do
       # puts("whois_get: #{str_domain}")
       data = whois_get(str_domain)
       break if data["error"].nil?
+      data["error"] += ", loop: #{i}"
+      sleep(error_wait_time)
     end
 
     jsondata.push(data)
