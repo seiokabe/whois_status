@@ -28,6 +28,7 @@ OptionParser.new do |opts|
       print("Error: -d, --domain option, requires additional arguments.\n\n")
       exit 1
     end
+    options[:domain] = true
     array_domains.push(domain)
   end
 
@@ -169,36 +170,40 @@ if array_domains.length == 0 then
   end
 
   ## test whois  args true is 'debug print'
-  # testWhois(true)
-  testWhois(false)
+  testWhois(false) if options[:domain].nil?
 end
 
+# jp_domain_count = 0
 jsondata = Array.new()
-jp_domain_count = 0
+threads  = Array.new()
+
+locks = Queue.new
+2.times { locks.push :lock }
+
 array_domains.each do |str_domain|
+  threads << Thread.new {
+    lock = locks.pop
+    # if str_domain =~ /\.jp/i then
+    #   sleep(3) if (jp_domain_count > 1)
+    #   sleep(5) if (jp_domain_count % 2 == 0)
+    #   jp_domain_count += 1
+    # end
+    for i in 1..3 do
+      # puts("whois_get: #{str_domain}")
+      data = whois_get(str_domain)
+      break if data["error"].nil?
+    end
 
-  # STDERR.puts(Time.now.sec)
-  # STDERR.puts(str_domain)
-
-  if str_domain =~ /\.jp/i then
-    sleep(3) if (jp_domain_count > 1)
-    sleep(5) if (jp_domain_count % 2 == 0)
-    jp_domain_count += 1
-  end
-
-  for i in 1..3 do
-    # puts("whois_get: #{str_domain}")
-    data = whois_get(str_domain)
-    break if data["error"].nil?
-  end
-
-  if options[:text] then
-    PrintHash(data)
-  else
     jsondata.push(data)
-  end
+    locks.push lock
+  }
 end
+threads.each { |t| t.join }
 
 if jsondata.length > 0 then
-  puts JSON.pretty_generate(jsondata)
+  if options[:text] then
+    jsondata.each { |data| PrintHash(data) }
+  else
+    puts JSON.pretty_generate(jsondata)
+  end
 end
