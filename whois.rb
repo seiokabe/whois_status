@@ -7,7 +7,7 @@ require 'whois'
 require 'json'
 
 defDomainListFile = "domain.txt"
-error_wait_time   = 3 # if error whois_get then retry loop, sleep sec.
+error_wait_time   = 30 # if error whois_get then retry loop, sleep sec.
 array_domains = Array.new()
 
 options = {}
