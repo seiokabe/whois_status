@@ -136,8 +136,15 @@ end
 
 def whois_get(d)
   begin
-    data = WhoisGet(d)
-    data.store("status", true)
+    if d =~ /\.io$/i then
+      # .io domain
+      json = `cd #{Dir.pwd}; ./io_whois_get.rb #{d}`
+      arr = JSON.parse(json)
+      data = arr[0]
+    else
+      data = WhoisGet(d)
+      data.store("status", true)
+    end
     return data
   rescue => e
     data = Hash.new()
@@ -170,7 +177,7 @@ if array_domains.length == 0 then
   end
 
   ## test whois  args true is 'debug print'
-  testWhois(false) if options[:domain].nil?
+  # testWhois(false) if options[:domain].nil?
 end
 
 jsondata = Array.new()
